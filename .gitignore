@@ -1,0 +1,8 @@
+/build/
+/portable/sessions/
+/.vs/
+*.pdb
+*.ilk
+*.user
+*.suo
+*.VC.db
