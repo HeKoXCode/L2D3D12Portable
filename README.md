@@ -18,9 +18,15 @@ Descarga el ZIP listo para usar desde la
 [ultima version](https://github.com/HeKoXCode/L2D3D12Portable/releases/latest).
 
 1. Extract the ZIP.
-2. Run `Start-L2D3D12.cmd`.
+2. Double-click `Start-L2D3D12.cmd` and accept the UAC prompt.
 3. Select the complete Lineage II client or its `system` directory.
-4. Use `Remove-L2D3D12.cmd` to remove the installed proxy safely.
+4. Select `L2.exe`, the server updater or its custom launcher from the file
+   picker.
+5. Use `Remove-L2D3D12.cmd` to remove the installed proxy safely.
+
+No PowerShell command or fixed installation path is required. The CMD finds its
+own portable directory and requests administrator rights automatically so that
+an elevated `L2.exe` inherits the D3D9On12 environment.
 
 The launcher must be used again for later DX12 sessions because backend
 selection is intentionally passed only to the process it starts.
@@ -38,6 +44,8 @@ selection is intentionally passed only to the process it starts.
   component to create the translated backend.
 - Logs whether the requested backend became D3D9On12 or fell back to native
   D3D9.
+- Lets the user select a private-server updater or launcher without editing a
+  command.
 - Records a manifest and SHA-256 so removal only touches the exact file this
   tool installed.
 

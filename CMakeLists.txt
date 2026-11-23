@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 
-project(L2D3D12Portable VERSION 0.1.0 LANGUAGES CXX)
+project(L2D3D12Portable VERSION 0.2.0 LANGUAGES CXX)
 
 if(NOT WIN32)
     message(FATAL_ERROR "L2D3D12Portable targets Windows only.")

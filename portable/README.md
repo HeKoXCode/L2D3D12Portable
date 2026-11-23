@@ -6,10 +6,18 @@ No convierte Unreal Engine 2 en un motor DX12 nativo. Coloca una capa `d3d9.dll`
 
 ## Uso normal
 
-1. Ejecuta `Start-L2D3D12.cmd`.
-2. Selecciona la carpeta completa del servidor o su carpeta `system`.
-3. El programa inspecciona `L2.exe` y todos los EXE/DLL de `system`, prueba D3D9On12 con la GPU y solo entonces instala el proxy.
-4. El cliente se inicia con `INTERLUDE_D3D_BACKEND=9on12` y se genera evidencia en `sessions`.
+1. Ejecuta `Start-L2D3D12.cmd` con doble clic.
+2. Acepta el pedido de administrador de Windows.
+3. Selecciona la carpeta completa del servidor o su carpeta `system`.
+4. Selecciona manualmente el ejecutable: `L2.exe`, un updater como
+   `WantedUpdater.exe` o el launcher propio del servidor.
+5. El programa inspecciona `L2.exe` y todos los EXE/DLL de `system`, prueba
+   D3D9On12 con la GPU y solo entonces instala el proxy.
+6. El ejecutable elegido se inicia con `INTERLUDE_D3D_BACKEND=9on12` y se
+   genera evidencia en `sessions`.
+
+No es necesario abrir PowerShell, escribir `cd` ni conocer la ruta del
+portable. El CMD se localiza a si mismo y solicita elevacion automaticamente.
 
 Para volver a usar DX12 en sesiones futuras, inicia el juego desde `Start-L2D3D12.cmd`. Abrir `L2.exe` directamente no activa la variable de backend y el proxy usa D3D9 nativo como opcion segura.
 
@@ -17,6 +25,12 @@ Para un launcher concreto dentro de la carpeta del cliente:
 
 ```powershell
 .\Start-L2D3D12.ps1 -ClientPath 'D:\Juegos\MiL2' -LaunchExecutable 'MiLauncher.exe'
+```
+
+Para mostrar manualmente el selector de ejecutable desde PowerShell:
+
+```powershell
+.\Start-L2D3D12.ps1 -ClientPath 'D:\Juegos\MiL2' -ChooseExecutable
 ```
 
 Para comprobar compatibilidad sin modificar el cliente:

@@ -7,6 +7,8 @@ param(
 
     [string[]]$LaunchArguments,
 
+    [switch]$ChooseExecutable,
+
     [switch]$InspectOnly,
 
     [switch]$InstallOnly,
@@ -20,7 +22,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-$script:PackageVersion = '0.1.0'
+$script:PackageVersion = '0.2.0'
 $script:PortableRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $script:ProxyPath = Join-Path $script:PortableRoot 'bin\x86\d3d9.dll'
 $script:SmokePath = Join-Path $script:PortableRoot 'bin\x86\proxy_smoke_test.exe'
@@ -228,6 +230,24 @@ function Select-ClientFolder {
         throw 'No se selecciono ningun cliente.'
     }
     return $dialog.SelectedPath
+}
+
+function Select-LaunchExecutable {
+    param([object]$Layout)
+
+    Add-Type -AssemblyName System.Windows.Forms
+    $dialog = New-Object System.Windows.Forms.OpenFileDialog
+    $dialog.Title = 'Selecciona L2.exe, el updater o el launcher del servidor'
+    $dialog.InitialDirectory = $Layout.ClientRoot
+    $dialog.Filter = 'Ejecutables (*.exe)|*.exe'
+    $dialog.CheckFileExists = $true
+    $dialog.CheckPathExists = $true
+    $dialog.Multiselect = $false
+    $dialog.RestoreDirectory = $true
+    if ($dialog.ShowDialog() -ne [System.Windows.Forms.DialogResult]::OK) {
+        throw 'No se selecciono ningun ejecutable para iniciar.'
+    }
+    return $dialog.FileName
 }
 
 function Resolve-ClientLayout {
@@ -640,6 +660,16 @@ try {
     $layout = Resolve-ClientLayout -RequestedPath $ClientPath
     Write-Host "Cliente: $($layout.ClientRoot)"
     Write-Host "System : $($layout.SystemDirectory)"
+
+    if ($ChooseExecutable -and
+        -not $Remove -and
+        -not $InspectOnly -and
+        -not $InstallOnly -and
+        [string]::IsNullOrWhiteSpace($LaunchExecutable)) {
+        Write-Stage 'Seleccionando L2.exe, updater o launcher'
+        $LaunchExecutable = Select-LaunchExecutable -Layout $layout
+        Write-Host "Ejecutable: $LaunchExecutable"
+    }
 
     if ($Remove) {
         Write-Stage 'Eliminando solo la instalacion identificada por manifiesto y hash'
