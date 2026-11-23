@@ -2,6 +2,8 @@ name: Build x86
 
 on:
   push:
+    branches:
+      - main
   pull_request:
   workflow_dispatch:
 
@@ -10,7 +12,8 @@ permissions:
 
 jobs:
   build:
-    runs-on: windows-latest
+    # The project intentionally targets the Visual Studio 2022 Win32 generator.
+    runs-on: windows-2022
 
     steps:
       - name: Check out source
